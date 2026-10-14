@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Vehicule;
-import tn.esprit.autoloc.repository.VehiculeRepository;
+import tn.esprit.autoloc.repository.IVehiculeRepository;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ public class VehiculeServiceImpl implements IVehiculeService {
 
     @Autowired
 
-    final VehiculeRepository CR;
+    final IVehiculeRepository CR;
 
     @Override
     public List<Vehicule> retrieveAllVehicules() {
-        return (List<Vehicule>) CR.findAll();
+        return CR.findAll();
     }
 
     @Override

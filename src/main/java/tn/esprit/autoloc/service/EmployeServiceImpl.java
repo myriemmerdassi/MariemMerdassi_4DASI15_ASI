@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Employe;
-import tn.esprit.autoloc.repository.EmployeRepository;
+import tn.esprit.autoloc.repository.IEmployeRepository;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ public class EmployeServiceImpl implements IEmployeService {
 
     @Autowired
 
-    final EmployeRepository CR;
+    final IEmployeRepository CR;
 
     @Override
     public List<Employe> retrieveAllEmployes() {
-        return (List<Employe>) CR.findAll();
+        return CR.findAll();
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Equipement;
-import tn.esprit.autoloc.repository.EquipementRepository;
+import tn.esprit.autoloc.repository.IEquipementRepository;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ public class EquipementServiceImpl implements IEquipementService {
 
     @Autowired
 
-    final EquipementRepository CR;
+    final IEquipementRepository CR;
 
     @Override
     public List<Equipement> retrieveAllEquipements() {
-        return (List<Equipement>) CR.findAll();
+        return CR.findAll();
     }
 
     @Override

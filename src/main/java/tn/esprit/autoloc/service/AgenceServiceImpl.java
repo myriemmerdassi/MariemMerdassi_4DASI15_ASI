@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Agence;
-import tn.esprit.autoloc.repository.AgenceRepository;
+import tn.esprit.autoloc.repository.IAgenceRepository;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ public class AgenceServiceImpl implements IAgenceService {
 
     @Autowired
 
-    final AgenceRepository CR;
+    final IAgenceRepository CR;
 
     @Override
     public List<Agence> retrieveAllAgences() {
-        return (List<Agence>) CR.findAll();
+        return CR.findAll();
     }
 
     @Override

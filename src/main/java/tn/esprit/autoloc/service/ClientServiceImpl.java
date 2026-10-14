@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Client;
-import tn.esprit.autoloc.repository.ClientRepository;
+import tn.esprit.autoloc.repository.IClientRepository;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ public class ClientServiceImpl implements IClientService {
 
     @Autowired
 
-    final ClientRepository CR;
+    final IClientRepository CR;
 
     @Override
     public List<Client> retrieveAllClients() {
-        return (List<Client>) CR.findAll();
+        return CR.findAll();
     }
 
     @Override

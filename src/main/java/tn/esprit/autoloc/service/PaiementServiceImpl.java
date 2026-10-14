@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Paiement;
-import tn.esprit.autoloc.repository.PaiementRepository;
+import tn.esprit.autoloc.repository.IPaiementRepository;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ public class PaiementServiceImpl implements IPaiementService {
 
     @Autowired
 
-    final PaiementRepository CR;
+    final IPaiementRepository CR;
 
     @Override
     public List<Paiement> retrieveAllPaiements() {
-        return (List<Paiement>) CR.findAll();
+        return CR.findAll();
     }
 
     @Override

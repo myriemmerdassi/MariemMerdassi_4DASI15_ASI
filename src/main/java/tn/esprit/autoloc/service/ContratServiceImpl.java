@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Contrat;
-import tn.esprit.autoloc.repository.ContratRepository;
+import tn.esprit.autoloc.repository.IContratRepository;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ public class ContratServiceImpl implements IContratService {
 
     @Autowired
 
-    final ContratRepository CR;
+    final IContratRepository CR;
 
     @Override
     public List<Contrat> retrieveAllContrats() {
-        return (List<Contrat>) CR.findAll();
+        return CR.findAll();
     }
 
     @Override

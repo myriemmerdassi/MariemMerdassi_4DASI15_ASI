@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Reservation;
-import tn.esprit.autoloc.repository.ReservationRepository;
+import tn.esprit.autoloc.repository.IReservationRepository;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ public class ReservationServiceImpl implements IReservationService {
 
     @Autowired
 
-    final ReservationRepository CR;
+    final IReservationRepository CR;
 
     @Override
     public List<Reservation> retrieveAllReservations() {
-        return (List<Reservation>) CR.findAll();
+        return CR.findAll();
     }
 
     @Override

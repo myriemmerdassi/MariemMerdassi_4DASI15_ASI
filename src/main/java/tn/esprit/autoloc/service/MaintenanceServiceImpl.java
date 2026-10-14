@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Maintenance;
-import tn.esprit.autoloc.repository.MaintenanceRepository;
+import tn.esprit.autoloc.repository.IMaintenanceRepository;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ public class MaintenanceServiceImpl implements IMaintenanceService {
 
     @Autowired
 
-    final MaintenanceRepository CR;
+    final IMaintenanceRepository CR;
 
     @Override
     public List<Maintenance> retrieveAllMaintenances() {
-        return (List<Maintenance>) CR.findAll();
+        return CR.findAll();
     }
 
     @Override
