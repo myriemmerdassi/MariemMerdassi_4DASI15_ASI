@@ -1,11 +1,9 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Paiement;
+import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import tn.esprit.autoloc.repository.IPaiementRepository;
 
 import java.util.List;
@@ -14,37 +12,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PaiementServiceImpl implements IPaiementService {
 
-    @Autowired
-
-    final IPaiementRepository CR;
+    private final IPaiementRepository paiementRepository;
 
     @Override
-    public List<Paiement> retrieveAllPaiements() {
-        return CR.findAll();
+    public Paiement findById(Long id) {
+        return paiementRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Paiement", String.valueOf(id)));
     }
 
     @Override
-    public Paiement addPaiement(Paiement c) {
-        return CR.save(c);
-    }
-
-    @Override
-    public Paiement updatePaiement(Paiement c) {
-        return CR.save(c);
-    }
-
-    @Override
-    public Paiement retrievePaiement(Long idPaiement) {
-        return CR.findById(idPaiement).orElse(null);
-    }
-
-    @Override
-    public void removePaiement(Long idPaiement) {
-        CR.deleteById(idPaiement);
-    }
-
-    @Override
-    public List<Paiement> addPaiements(List<Paiement> list) {
-        return (List<Paiement>) CR.saveAll(list);
+    public List<Paiement> findAll() {
+        return paiementRepository.findAll();
     }
 }

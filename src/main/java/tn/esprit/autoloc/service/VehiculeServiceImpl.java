@@ -1,50 +1,43 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import tn.esprit.autoloc.Utils;
 import tn.esprit.autoloc.domain.Vehicule;
 import tn.esprit.autoloc.repository.IVehiculeRepository;
 
-import java.util.List;
-
 @Service
-@RequiredArgsConstructor
-public class VehiculeServiceImpl implements IVehiculeService {
+public class VehiculeServiceImpl extends GenericServiceImpl<Vehicule, Long> implements IVehiculeService {
 
-    @Autowired
-
-    final IVehiculeRepository CR;
-
-    @Override
-    public List<Vehicule> retrieveAllVehicules() {
-        return CR.findAll();
+    public VehiculeServiceImpl(IVehiculeRepository vehiculeRepository) {
+        super(vehiculeRepository);
     }
 
     @Override
-    public Vehicule addVehicule(Vehicule c) {
-        return CR.save(c);
+    protected String getEntityName() {
+        return "Vehicule";
     }
 
     @Override
-    public Vehicule updateVehicule(Vehicule c) {
-        return CR.save(c);
+    protected Long getId(Vehicule entity) {
+        return entity.getIdVehicule();
     }
 
     @Override
-    public Vehicule retrieveVehicule(Long idVehicule) {
-        return CR.findById(idVehicule).orElse(null);
+    protected void setFields(Vehicule existing, Vehicule entity) {
+        existing.setImmatriculation(entity.getImmatriculation());
+        existing.setMarque(entity.getMarque());
+        existing.setModele(entity.getModele());
+        existing.setCategorie(entity.getCategorie());
+        existing.setTarifJournalier(entity.getTarifJournalier());
+        existing.setStatut(entity.getStatut());
+        existing.setAgence(entity.getAgence());
     }
 
     @Override
-    public void removeVehicule(Long idVehicule) {
-        CR.deleteById(idVehicule);
-    }
-
-    @Override
-    public List<Vehicule> addVehicules(List<Vehicule> list) {
-        return (List<Vehicule>) CR.saveAll(list);
+    public boolean check(Vehicule vehicule, boolean isNew) {
+        return vehicule != null
+                && Utils.isNotEmpty(vehicule.getImmatriculation())
+                && Utils.isNotEmpty(vehicule.getMarque())
+                && Utils.isNotEmpty(vehicule.getModele());
     }
 }

@@ -1,50 +1,49 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import tn.esprit.autoloc.Utils;
 import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.repository.IAgenceRepository;
 
-import java.util.List;
-
 @Service
-@RequiredArgsConstructor
-public class AgenceServiceImpl implements IAgenceService {
+@Primary
+public class AgenceServiceImpl extends GenericServiceImpl<Agence, Long> implements IAgenceService {
 
-    @Autowired
-
-    final IAgenceRepository CR;
-
-    @Override
-    public List<Agence> retrieveAllAgences() {
-        return CR.findAll();
+    public AgenceServiceImpl(IAgenceRepository agenceRepository) {
+        super(agenceRepository);
     }
 
     @Override
-    public Agence addAgence(Agence c) {
-        return CR.save(c);
+    protected String getEntityName() {
+        return "Agence";
     }
 
     @Override
-    public Agence updateAgence(Agence c) {
-        return CR.save(c);
+    protected Long getId(Agence entity) {
+        return entity.getIdAgence();
     }
 
     @Override
-    public Agence retrieveAgence(Long idAgence) {
-        return CR.findById(idAgence).orElse(null);
+    protected void setFields(Agence existing, Agence entity) {
+        existing.setNom(entity.getNom());
+        existing.setVille(entity.getVille());
+        existing.setAdresse(entity.getAdresse());
+        existing.setTelephone(entity.getTelephone());
     }
 
     @Override
-    public void removeAgence(Long idAgence) {
-        CR.deleteById(idAgence);
+    public boolean check(Agence agence, boolean isNew) {
+        return agence != null
+                && Utils.isNotEmpty(agence.getNom())
+                && Utils.isNotEmpty(agence.getVille())
+                && Utils.isNotEmpty(agence.getAdresse())
+                && Utils.isNotEmpty(agence.getTelephone());
     }
 
     @Override
-    public List<Agence> addAgences(List<Agence> list) {
-        return (List<Agence>) CR.saveAll(list);
+    public boolean hasVehicules(Long id) {
+        Agence agence = findById(id);
+        return agence.getVehicules() != null && !agence.getVehicules().isEmpty();
     }
 }

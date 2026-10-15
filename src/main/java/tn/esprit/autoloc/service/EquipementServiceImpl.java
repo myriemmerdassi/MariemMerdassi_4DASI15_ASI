@@ -1,50 +1,34 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import tn.esprit.autoloc.Utils;
 import tn.esprit.autoloc.domain.Equipement;
 import tn.esprit.autoloc.repository.IEquipementRepository;
 
-import java.util.List;
-
 @Service
-@RequiredArgsConstructor
-public class EquipementServiceImpl implements IEquipementService {
+public class EquipementServiceImpl extends GenericServiceImpl<Equipement, Long> implements IEquipementService {
 
-    @Autowired
-
-    final IEquipementRepository CR;
-
-    @Override
-    public List<Equipement> retrieveAllEquipements() {
-        return CR.findAll();
+    public EquipementServiceImpl(IEquipementRepository equipementRepository) {
+        super(equipementRepository);
     }
 
     @Override
-    public Equipement addEquipement(Equipement c) {
-        return CR.save(c);
+    protected String getEntityName() {
+        return "Equipement";
     }
 
     @Override
-    public Equipement updateEquipement(Equipement c) {
-        return CR.save(c);
+    protected Long getId(Equipement entity) {
+        return entity.getIdEquipement();
     }
 
     @Override
-    public Equipement retrieveEquipement(Long idEquipement) {
-        return CR.findById(idEquipement).orElse(null);
+    protected void setFields(Equipement existing, Equipement entity) {
+        existing.setLibelle(entity.getLibelle());
     }
 
     @Override
-    public void removeEquipement(Long idEquipement) {
-        CR.deleteById(idEquipement);
-    }
-
-    @Override
-    public List<Equipement> addEquipements(List<Equipement> list) {
-        return (List<Equipement>) CR.saveAll(list);
+    public boolean check(Equipement equipement, boolean isNew) {
+        return equipement != null && Utils.isNotEmpty(equipement.getLibelle());
     }
 }

@@ -1,50 +1,39 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import tn.esprit.autoloc.Utils;
 import tn.esprit.autoloc.domain.Employe;
 import tn.esprit.autoloc.repository.IEmployeRepository;
 
-import java.util.List;
-
 @Service
-@RequiredArgsConstructor
-public class EmployeServiceImpl implements IEmployeService {
+public class EmployeServiceImpl extends GenericServiceImpl<Employe, Long> implements IEmployeService {
 
-    @Autowired
-
-    final IEmployeRepository CR;
-
-    @Override
-    public List<Employe> retrieveAllEmployes() {
-        return CR.findAll();
+    public EmployeServiceImpl(IEmployeRepository employeRepository) {
+        super(employeRepository);
     }
 
     @Override
-    public Employe addEmploye(Employe c) {
-        return CR.save(c);
+    protected String getEntityName() {
+        return "Employe";
     }
 
     @Override
-    public Employe updateEmploye(Employe c) {
-        return CR.save(c);
+    protected Long getId(Employe entity) {
+        return entity.getIdEmploye();
     }
 
     @Override
-    public Employe retrieveEmploye(Long idEmploye) {
-        return CR.findById(idEmploye).orElse(null);
+    protected void setFields(Employe existing, Employe entity) {
+        existing.setNom(entity.getNom());
+        existing.setPrenom(entity.getPrenom());
+        existing.setRole(entity.getRole());
+        existing.setAgence(entity.getAgence());
     }
 
     @Override
-    public void removeEmploye(Long idEmploye) {
-        CR.deleteById(idEmploye);
-    }
-
-    @Override
-    public List<Employe> addEmployes(List<Employe> list) {
-        return (List<Employe>) CR.saveAll(list);
+    public boolean check(Employe employe, boolean isNew) {
+        return employe != null
+                && Utils.isNotEmpty(employe.getNom())
+                && Utils.isNotEmpty(employe.getPrenom());
     }
 }

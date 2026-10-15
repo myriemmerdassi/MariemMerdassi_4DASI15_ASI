@@ -1,50 +1,42 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import tn.esprit.autoloc.Utils;
 import tn.esprit.autoloc.domain.Client;
 import tn.esprit.autoloc.repository.IClientRepository;
 
-import java.util.List;
-
 @Service
-@RequiredArgsConstructor
-public class ClientServiceImpl implements IClientService {
+public class ClientServiceImpl extends GenericServiceImpl<Client, Long> implements IClientService {
 
-    @Autowired
-
-    final IClientRepository CR;
-
-    @Override
-    public List<Client> retrieveAllClients() {
-        return CR.findAll();
+    public ClientServiceImpl(IClientRepository clientRepository) {
+        super(clientRepository);
     }
 
     @Override
-    public Client addClient(Client c) {
-        return CR.save(c);
+    protected String getEntityName() {
+        return "Client";
     }
 
     @Override
-    public Client updateClient(Client c) {
-        return CR.save(c);
+    protected Long getId(Client entity) {
+        return entity.getIdClient();
     }
 
     @Override
-    public Client retrieveClient(Long idClient) {
-        return CR.findById(idClient).orElse(null);
+    protected void setFields(Client existing, Client entity) {
+        existing.setNom(entity.getNom());
+        existing.setPrenom(entity.getPrenom());
+        existing.setEmail(entity.getEmail());
+        existing.setTelephone(entity.getTelephone());
+        existing.setNumPermis(entity.getNumPermis());
+        existing.setDateInscription(entity.getDateInscription());
     }
 
     @Override
-    public void removeClient(Long idClient) {
-        CR.deleteById(idClient);
-    }
-
-    @Override
-    public List<Client> addClients(List<Client> clients) {
-        return (List<Client>) CR.saveAll(clients);
+    public boolean check(Client client, boolean isNew) {
+        return client != null
+                && Utils.isNotEmpty(client.getNom())
+                && Utils.isNotEmpty(client.getPrenom())
+                && Utils.isNotEmpty(client.getEmail());
     }
 }

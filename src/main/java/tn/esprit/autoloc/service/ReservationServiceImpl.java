@@ -1,50 +1,38 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Reservation;
 import tn.esprit.autoloc.repository.IReservationRepository;
 
-import java.util.List;
-
 @Service
-@RequiredArgsConstructor
-public class ReservationServiceImpl implements IReservationService {
+public class ReservationServiceImpl extends GenericServiceImpl<Reservation, Long> implements IReservationService {
 
-    @Autowired
-
-    final IReservationRepository CR;
-
-    @Override
-    public List<Reservation> retrieveAllReservations() {
-        return CR.findAll();
+    public ReservationServiceImpl(IReservationRepository reservationRepository) {
+        super(reservationRepository);
     }
 
     @Override
-    public Reservation addReservation(Reservation c) {
-        return CR.save(c);
+    protected String getEntityName() {
+        return "Reservation";
     }
 
     @Override
-    public Reservation updateReservation(Reservation c) {
-        return CR.save(c);
+    protected Long getId(Reservation entity) {
+        return entity.getIdReservation();
     }
 
     @Override
-    public Reservation retrieveReservation(Long idReservation) {
-        return CR.findById(idReservation).orElse(null);
+    protected void setFields(Reservation existing, Reservation entity) {
+        existing.setDateDebut(entity.getDateDebut());
+        existing.setDateFin(entity.getDateFin());
+        existing.setStatut(entity.getStatut());
+        existing.setVehicule(entity.getVehicule());
+        existing.setClient(entity.getClient());
+        existing.setContrat(entity.getContrat());
     }
 
     @Override
-    public void removeReservation(Long idReservation) {
-        CR.deleteById(idReservation);
-    }
-
-    @Override
-    public List<Reservation> addReservations(List<Reservation> list) {
-        return (List<Reservation>) CR.saveAll(list);
+    public boolean check(Reservation reservation, boolean isNew) {
+        return reservation != null && reservation.getDateDebut() != null;
     }
 }

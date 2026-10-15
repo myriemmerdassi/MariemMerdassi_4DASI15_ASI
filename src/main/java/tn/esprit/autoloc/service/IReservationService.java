@@ -2,13 +2,5 @@ package tn.esprit.autoloc.service;
 
 import tn.esprit.autoloc.domain.Reservation;
 
-import java.util.List;
-
-public interface IReservationService {
-    List<Reservation> retrieveAllReservations();
-    Reservation addReservation(Reservation c);
-    Reservation updateReservation(Reservation c);
-    Reservation retrieveReservation(Long idReservation);
-    void removeReservation(Long idReservation);
-    List<Reservation> addReservations (List<Reservation> list);
+public interface IReservationService extends IGenericService<Reservation, Long> {
 }

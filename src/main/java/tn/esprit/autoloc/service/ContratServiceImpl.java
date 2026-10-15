@@ -1,50 +1,35 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Contrat;
 import tn.esprit.autoloc.repository.IContratRepository;
 
-import java.util.List;
-
 @Service
-@RequiredArgsConstructor
-public class ContratServiceImpl implements IContratService {
+public class ContratServiceImpl extends GenericServiceImpl<Contrat, Long> implements IContratService {
 
-    @Autowired
-
-    final IContratRepository CR;
-
-    @Override
-    public List<Contrat> retrieveAllContrats() {
-        return CR.findAll();
+    public ContratServiceImpl(IContratRepository contratRepository) {
+        super(contratRepository);
     }
 
     @Override
-    public Contrat addContrat(Contrat c) {
-        return CR.save(c);
+    protected String getEntityName() {
+        return "Contrat";
     }
 
     @Override
-    public Contrat updateContrat(Contrat c) {
-        return CR.save(c);
+    protected Long getId(Contrat entity) {
+        return entity.getIdContrat();
     }
 
     @Override
-    public Contrat retrieveContrat(Long idContrat) {
-        return CR.findById(idContrat).orElse(null);
+    protected void setFields(Contrat existing, Contrat entity) {
+        existing.setDateSignature(entity.getDateSignature());
+        existing.setMontantTotal(entity.getMontantTotal());
+        existing.setValide(entity.isValide());
     }
 
     @Override
-    public void removeContrat(Long idContrat) {
-        CR.deleteById(idContrat);
-    }
-
-    @Override
-    public List<Contrat> addContrats(List<Contrat> list) {
-        return (List<Contrat>) CR.saveAll(list);
+    public boolean check(Contrat contrat, boolean isNew) {
+        return contrat != null && contrat.getMontantTotal() != null;
     }
 }

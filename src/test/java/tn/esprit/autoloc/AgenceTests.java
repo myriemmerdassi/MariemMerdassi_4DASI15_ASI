@@ -14,6 +14,7 @@ import tn.esprit.autoloc.domain.CategorieVehicule;
 import tn.esprit.autoloc.domain.StatutVehicule;
 import tn.esprit.autoloc.domain.Vehicule;
 import tn.esprit.autoloc.repository.IAgenceRepository;
+import tn.esprit.autoloc.service.IAgenceService;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,6 +27,9 @@ public class AgenceTests {
 
     @Autowired
     private IAgenceRepository fullAgenceRepository;
+
+    @Autowired
+    private IAgenceService agenceService;
 
     private void addAgence(CrudRepository<Agence, Long> repository) {
         int info = (int) System.currentTimeMillis();
@@ -112,6 +116,19 @@ public class AgenceTests {
         for (Agence agence : page.getContent()) {
             System.out.println(agence.getIdAgence() + " | " + agence.getNom() + " | " + agence.getVille() + " | " + agence.getAdresse());
         }
+    }
+
+    @Test
+    public void createAgence() {
+        Agence agence = new Agence();
+        agence.setNom("Agence Sfax");
+        agence.setVille("Sfax");
+        agence.setAdresse("12 Avenue Bourguiba");
+        agence.setTelephone("74123456");
+
+        Agence created = agenceService.create(agence);
+
+        System.out.println("Agence créée : " + created.getIdAgence() + " | " + created.getNom() + " | " + created.getVille());
     }
 }
 

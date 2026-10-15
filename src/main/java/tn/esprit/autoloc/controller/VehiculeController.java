@@ -16,31 +16,26 @@ public class VehiculeController {
 
     @GetMapping("/retrieve-all-vehicules")
     public List<Vehicule> retrieveAllVehicules() {
-        return vehiculeService.retrieveAllVehicules();
+        return vehiculeService.findAll();
     }
 
     @GetMapping("/retrieve-vehicule/{id}")
     public Vehicule retrieveVehicule(@PathVariable("id") Long idVehicule) {
-        return vehiculeService.retrieveVehicule(idVehicule);
+        return vehiculeService.findById(idVehicule);
     }
 
     @PostMapping("/add-vehicule")
     public Vehicule addVehicule(@RequestBody Vehicule c) {
-        return vehiculeService.addVehicule(c);
-    }
-
-    @PostMapping("/add-vehicules")
-    public List<Vehicule> addVehicules(@RequestBody List<Vehicule> list) {
-        return vehiculeService.addVehicules(list);
+        return vehiculeService.create(c);
     }
 
     @PutMapping("/update-vehicule")
     public Vehicule updateVehicule(@RequestBody Vehicule c) {
-        return vehiculeService.updateVehicule(c);
+        return vehiculeService.update(c.getIdVehicule(), c);
     }
 
     @DeleteMapping("/remove-vehicule/{id}")
     public void removeVehicule(@PathVariable("id") Long idVehicule) {
-        vehiculeService.removeVehicule(idVehicule);
+        vehiculeService.deleteById(idVehicule);
     }
 }
