@@ -1,0 +1,1715 @@
+{
+  "info": {
+    "name": "AutoLoc-API",
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
+    "description": "Collection complète pour AutoLoc-API (Chapitre 6)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Agences",
+      "item": [
+        {
+          "name": "Liste",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/agences",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "agences"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consultation-existant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/agences/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "agences",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consultation-inexistant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 404 Not Found\", () => pm.response.to.have.status(404));",
+                  "var data = pm.response.json(); pm.expect(data.error).to.eql(\"Not Found\");"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/agences/9999",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "agences",
+                "9999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ajout-sans-id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 201 Created\", () => pm.response.to.have.status(201));",
+                  "var data = pm.response.json(); pm.expect(data).to.have.property(\"idAgence\");"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nom\": \"Agence Ennasr\",\n    \"ville\": \"Ariana\",\n    \"adresse\": \"Avenue Hedi Nouira\",\n    \"telephone\": \"70123456\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/agences",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "agences"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ajout-avec-id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 400 Bad Request\", () => pm.response.to.have.status(400));",
+                  "var data = pm.response.json(); pm.expect(data.error).to.eql(\"Bad Request\");"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"idAgence\": 999,\n    \"nom\": \"Agence Invalide\",\n    \"ville\": \"Tunis\",\n    \"adresse\": \"Rue Test\",\n    \"telephone\": \"71000000\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/agences",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "agences"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Modification-existant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));",
+                  "var data = pm.response.json(); pm.expect(data.nom).to.eql(\"Agence Ennasr Modifiée\");"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nom\": \"Agence Ennasr Modifiée\",\n    \"ville\": \"Ariana\",\n    \"adresse\": \"Avenue Hedi Nouira\",\n    \"telephone\": \"70999999\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/agences/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "agences",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Modification-inexistant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 404 Not Found\", () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nom\": \"Agence Inexistante\",\n    \"ville\": \"Tunis\",\n    \"adresse\": \"Rue Nulle\",\n    \"telephone\": \"71111111\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/agences/9999",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "agences",
+                "9999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Suppression-existant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 204 No Content\", () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/agences/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "agences",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Suppression-inexistant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 404 Not Found\", () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/agences/9999",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "agences",
+                "9999"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clients",
+      "item": [
+        {
+          "name": "Lister Clients",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/clients",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "clients"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Clients existant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/clients/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "clients",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Clients inexistant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 404 Not Found\", () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/clients/9999",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "clients",
+                "9999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Créer Clients",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 201 Created\", () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nom\": \"Ben Salah\",\n    \"prenom\": \"Mohamed\",\n    \"email\": \"mohamed.bensalah@email.com\",\n    \"telephone\": \"20123456\",\n    \"numPermis\": \"12/345678\",\n    \"dateInscription\": \"2026-01-15\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/clients",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "clients"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Modifier Clients",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nom\": \"Ben Salah\",\n    \"prenom\": \"Mohamed Ali\",\n    \"email\": \"mohamedali@email.com\",\n    \"telephone\": \"20123456\",\n    \"numPermis\": \"12/345678\",\n    \"dateInscription\": \"2026-01-15\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/clients/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "clients",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Supprimer Clients",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 204 No Content\", () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/clients/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "clients",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contrats",
+      "item": [
+        {
+          "name": "Lister Contrats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/contrats",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "contrats"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Contrats existant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/contrats/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "contrats",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Contrats inexistant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 404 Not Found\", () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/contrats/9999",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "contrats",
+                "9999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Créer Contrats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 201 Created\", () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"dateSignature\": \"2026-11-01\",\n    \"montantTotal\": 450,\n    \"valide\": true\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/contrats",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "contrats"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Modifier Contrats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"dateSignature\": \"2026-11-01\",\n    \"montantTotal\": 500,\n    \"valide\": true\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/contrats/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "contrats",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Supprimer Contrats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 204 No Content\", () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/contrats/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "contrats",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Employes",
+      "item": [
+        {
+          "name": "Lister Employes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/employes",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "employes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Employes existant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/employes/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "employes",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Employes inexistant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 404 Not Found\", () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/employes/9999",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "employes",
+                "9999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Créer Employes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 201 Created\", () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nom\": \"Trabelsi\",\n    \"prenom\": \"Sami\",\n    \"role\": \"AGENT\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/employes",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "employes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Modifier Employes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nom\": \"Trabelsi\",\n    \"prenom\": \"Sami\",\n    \"role\": \"RESPONSABLE_AGENCE\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/employes/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "employes",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Supprimer Employes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 204 No Content\", () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/employes/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "employes",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Equipements",
+      "item": [
+        {
+          "name": "Lister Equipements",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/equipements",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "equipements"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Equipements existant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/equipements/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "equipements",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Equipements inexistant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 404 Not Found\", () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/equipements/9999",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "equipements",
+                "9999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Créer Equipements",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 201 Created\", () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"libelle\": \"GPS Satellite\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/equipements",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "equipements"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Modifier Equipements",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"libelle\": \"GPS Satellite HD\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/equipements/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "equipements",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Supprimer Equipements",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 204 No Content\", () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/equipements/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "equipements",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Maintenances",
+      "item": [
+        {
+          "name": "Lister Maintenances",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/maintenances",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "maintenances"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Maintenances existant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/maintenances/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "maintenances",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Maintenances inexistant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 404 Not Found\", () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/maintenances/9999",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "maintenances",
+                "9999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Créer Maintenances",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 201 Created\", () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"dateDebut\": \"2026-11-05\",\n    \"dateFin\": \"2026-11-07\",\n    \"description\": \"Vidange et révision\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/maintenances",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "maintenances"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Modifier Maintenances",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"dateDebut\": \"2026-11-05\",\n    \"dateFin\": \"2026-11-08\",\n    \"description\": \"Vidange, plaquettes de frein\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/maintenances/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "maintenances",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Supprimer Maintenances",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 204 No Content\", () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/maintenances/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "maintenances",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Paiements",
+      "item": [
+        {
+          "name": "Lister Paiements",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/paiements",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "paiements"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Paiement existant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/paiements/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "paiements",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Paiement inexistant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 404 Not Found\", () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/paiements/9999",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "paiements",
+                "9999"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reservations",
+      "item": [
+        {
+          "name": "Lister Reservations",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/reservations",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "reservations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Reservations existant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/reservations/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "reservations",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Reservations inexistant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 404 Not Found\", () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/reservations/9999",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "reservations",
+                "9999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Créer Reservations",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 201 Created\", () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"dateDebut\": \"2026-11-10\",\n    \"dateFin\": \"2026-11-15\",\n    \"statut\": \"CONFIRMEE\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/reservations",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "reservations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Modifier Reservations",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"dateDebut\": \"2026-11-10\",\n    \"dateFin\": \"2026-11-17\",\n    \"statut\": \"EN_COURS\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/reservations/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "reservations",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Supprimer Reservations",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 204 No Content\", () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/reservations/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "reservations",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vehicules",
+      "item": [
+        {
+          "name": "Lister Vehicules",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/vehicules",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "vehicules"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Vehicules existant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/vehicules/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "vehicules",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulter Vehicules inexistant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 404 Not Found\", () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/vehicules/9999",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "vehicules",
+                "9999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Créer Vehicules",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 201 Created\", () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"immatriculation\": \"TU-220-9999\",\n    \"marque\": \"Peugeot\",\n    \"modele\": \"208\",\n    \"categorie\": \"ECONOMIQUE\",\n    \"tarifJournalier\": 75,\n    \"statut\": \"DISPONIBLE\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/vehicules",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "vehicules"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Modifier Vehicules",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 200 OK\", () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"immatriculation\": \"TU-220-9999\",\n    \"marque\": \"Peugeot\",\n    \"modele\": \"208\",\n    \"categorie\": \"ECONOMIQUE\",\n    \"tarifJournalier\": 80,\n    \"statut\": \"DISPONIBLE\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/vehicules/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "vehicules",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Supprimer Vehicules",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Statut 204 No Content\", () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/vehicules/1",
+              "host": [
+                "{{asiApiUrl}}"
+              ],
+              "path": [
+                "vehicules",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
